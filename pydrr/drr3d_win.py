@@ -44,8 +44,9 @@ def drr3d_win(D,flow=1,fhigh=124,dt=0.004,N=1,K=4,verb=0,n1win=None,n2win=None,n
 	 
 	DEMO: demos/test_pydrr_drr3d_win.m
 	"""
-	print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'verb=',verb)
-	print('n1win=',n1win,'n2win=',n2win,'r1=',r1,'r2=',r2,'r3=',r3)
+	if verb:
+		print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'verb=',verb)
+		print('n1win=',n1win,'n2win=',n2win,'r1=',r1,'r2=',r2,'r3=',r3)
 	
 	from .window import win3d
 	from .localfun import localdrr3d
@@ -55,7 +56,8 @@ def drr3d_win(D,flow=1,fhigh=124,dt=0.004,N=1,K=4,verb=0,n1win=None,n2win=None,n
 		D=np.expand_dims(D, axis=2)
 	
 	[nt,nx,ny]=D.shape
-	print(D.shape)
+	if verb:
+		print(D.shape)
 	if n1win is None or n2win is None or n3win is None:
 		n1win=nt;
 		n2win=nx;
@@ -119,8 +121,9 @@ def drr3d_win_auto(D,flow=1,fhigh=124,dt=0.004,N=1,K=4,verb=0,mode=2,n1win=None,
 	 
 	DEMO: demos/test_pydrr_drr3d_win.m
 	"""
-	print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'verb=',verb)
-	print('n1win=',n1win,'n2win=',n2win,'r1=',r1,'r2=',r2,'r3=',r3)
+	if verb:
+		print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'verb=',verb)
+		print('n1win=',n1win,'n2win=',n2win,'r1=',r1,'r2=',r2,'r3=',r3)
 	
 	from .window import win3d
 	from .localfun import localdrr3d_auto
@@ -130,7 +133,10 @@ def drr3d_win_auto(D,flow=1,fhigh=124,dt=0.004,N=1,K=4,verb=0,mode=2,n1win=None,
 		D=np.expand_dims(D, axis=2)
 	
 	[nt,nx,ny]=D.shape
-	print(D.shape)
+	
+	if verb:
+		print(D.shape)
+	
 	if n1win is None or n2win is None or n3win is None:
 		n1win=nt;
 		n2win=nx;
@@ -196,8 +202,10 @@ def drr3drecon_win(D,mask,flow=1,fhigh=124,dt=0.004,N=1,K=4,Niter=10,eps=0.00001
 	 
 	DEMO: demos/test_pydrr_drr3d_win.m
 	"""
-	print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'verb=',verb)
-	print('n1win=',n1win,'n2win=',n2win,'r1=',r1,'r2=',r2,'r3=',r3)
+	
+	if verb:
+		print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'verb=',verb)
+		print('n1win=',n1win,'n2win=',n2win,'r1=',r1,'r2=',r2,'r3=',r3)
 	
 	from .window import win3dmask
 	from .localfun import localdrr3drecon
@@ -269,8 +277,10 @@ def drr3drecon_win_auto(D,mask,flow=1,fhigh=124,dt=0.004,N=1,K=4,Niter=10,eps=0.
 	 
 	DEMO: demos/test_pydrr_drr3d_win.m
 	"""
-	print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'verb=',verb)
-	print('n1win=',n1win,'n2win=',n2win,'r1=',r1,'r2=',r2,'r3=',r3)
+	
+	if verb:
+		print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'verb=',verb)
+		print('n1win=',n1win,'n2win=',n2win,'r1=',r1,'r2=',r2,'r3=',r3)
 	
 	from .window import win3dmask
 	from .localfun import localdrr3drecon_auto

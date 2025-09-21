@@ -43,7 +43,8 @@ def drr3d(D, flow=1, fhigh=124, dt=0.004, N=1, K=3, verb=0):
 	 demos/test_pydrr_drr2d.py
 	 demos/test_pydrr_drr3d.py
 	"""
-	print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'verb=',verb)
+	if verb:
+		print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'verb=',verb)
 
 	if D.ndim==2:	#for 2D problems
 		D=np.expand_dims(D, axis=2)
@@ -143,7 +144,8 @@ def drr3d_auto(D, flow=1, fhigh=124, dt=0.004, N=1, K=3, verb=0, mode=2, eps=0.0
 	 demos/test_pydrr_drr2d_diffraction.py
 	 demos/test_pydrr_drr3d_diffraction.py
 	"""
-	print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'verb=',verb)
+	if verb:
+		print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'verb=',verb)
 
 	if D.ndim==2:	#for 2D problems
 		D=np.expand_dims(D, axis=2)
@@ -261,7 +263,10 @@ def drr3drecon(D, MASK, flow=1, fhigh=124, dt=0.004, N=3, K=3, Niter=10,eps=0.00
 
 	if mode==0:
 		a=np.ones([Niter,1]);
-	print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'Niter=',Niter,'eps=',eps,'mode=',mode,'verb=',verb)
+	
+	if verb:
+		print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'Niter=',Niter,'eps=',eps,'mode=',mode,'verb=',verb)
+		
 	if D.ndim==2:	#for 2D problems
 		D=np.expand_dims(D, axis=2)
 	if MASK.ndim==2:	#for 2D problems
@@ -299,7 +304,9 @@ def drr3drecon(D, MASK, flow=1, fhigh=124, dt=0.004, N=3, K=3, Niter=10,eps=0.00
 	lyy=ny-ly+1;
 	M=np.zeros([lx*ly,lxx*lyy],dtype=np.complex128);
 	
-	print('mask.shape',mask.shape)
+	if verb:
+		print('mask.shape',mask.shape)
+	
 	#main loop
 	for k in range(ilow,ihigh+1):
 		S_obs=np.squeeze(DATA_FX[k-1,:,:]);   
@@ -393,7 +400,10 @@ def drr3drecon_auto(D, MASK, flow=1, fhigh=124, dt=0.004, N=3, K=3, Niter=10,eps
 
 	if mode==0:
 		a=np.ones([Niter,1]);
-	print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'Niter=',Niter,'eps=',eps,'mode=',mode,'verb=',verb)
+	
+	if verb:
+		print('flow=',flow,'fhigh=',fhigh,'dt=',dt,'N=',N,'K=',K,'Niter=',Niter,'eps=',eps,'mode=',mode,'verb=',verb)
+		
 	if D.ndim==2:	#for 2D problems
 		D=np.expand_dims(D, axis=2)
 	if MASK.ndim==2:	#for 2D problems
@@ -439,7 +449,9 @@ def drr3drecon_auto(D, MASK, flow=1, fhigh=124, dt=0.004, N=3, K=3, Niter=10,eps
 	lyy=ny-ly+1;
 	M=np.zeros([lx*ly,lxx*lyy],dtype=np.complex128);
 	
-	print('mask.shape',mask.shape)
+	if verb:
+		print('mask.shape',mask.shape)
+		
 	#main loop
 	for k in range(ilow,ihigh+1):
 		S_obs=np.squeeze(DATA_FX[k-1,:,:]);   
