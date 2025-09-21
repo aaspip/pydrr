@@ -59,7 +59,7 @@ def drr5d(D, flow=1, fhigh=124, dt=0.004, N=1, K=3, verb=0):
 	
 	#Transform into F-X domain
 	DATA_FX=np.fft.fft(D,nf,0);
-	DATA_FX0=np.zeros([nf,nx,ny,nhx,nhy],dtype=np.complex_);
+	DATA_FX0=np.zeros([nf,nx,ny,nhx,nhy],dtype=np.complex128);
 
 	#First and last nts of the DFT.
 	ilow  = np.floor(flow*dt*nf)+1;
@@ -81,7 +81,7 @@ def drr5d(D, flow=1, fhigh=124, dt=0.004, N=1, K=3, verb=0):
 	lhxx=nhx-lhx+1;
 	lhy=int(np.floor(nhy/2)+1);
 	lhyy=nhy-lhy+1;
-	M=np.zeros([lx*ly*lhx*lhy,lxx*lyy*lhxx*lhyy],dtype=np.complex_);
+	M=np.zeros([lx*ly*lhx*lhy,lxx*lyy*lhxx*lhyy],dtype=np.complex128);
 	
 	#main loop
 	for k in range(ilow,ihigh+1):
@@ -178,7 +178,7 @@ def drr5drecon(D, MASK, flow=1, fhigh=124, dt=0.004, N=3, K=3, Niter=10,eps=0.00
 	
 	#Transform into F-X domain
 	DATA_FX=np.fft.fft(D,nf,0);
-	DATA_FX0=np.zeros([nf,nx,ny,nhx,nhy],dtype=np.complex_);
+	DATA_FX0=np.zeros([nf,nx,ny,nhx,nhy],dtype=np.complex128);
 
 	#First and last nts of the DFT.
 	ilow  = np.floor(flow*dt*nf)+1;
@@ -200,7 +200,7 @@ def drr5drecon(D, MASK, flow=1, fhigh=124, dt=0.004, N=3, K=3, Niter=10,eps=0.00
 	lhxx=nhx-lhx+1;
 	lhy=int(np.floor(nhy/2)+1);
 	lhyy=nhy-lhy+1;
-	M=np.zeros([lx*ly*lhx*lhy,lxx*lyy*lhxx*lhyy],dtype=np.complex_);
+	M=np.zeros([lx*ly*lhx*lhy,lxx*lyy*lhxx*lhyy],dtype=np.complex128);
 	
 	#main loop
 	for k in range(ilow,ihigh+1):
@@ -253,11 +253,11 @@ def P_H(din,lx,ly,lhx,lhy):
 	lyy=ny-ly+1;
 	lhxx=nhx-lhx+1;
 	lhyy=nhy-lhy+1;
-	dout=np.zeros([lx*ly*lhx*lhy,lxx*lyy*lhxx*lhyy],dtype=np.complex_);
+	dout=np.zeros([lx*ly*lhx*lhy,lxx*lyy*lhxx*lhyy],dtype=np.complex128);
 	
-	r1o=np.zeros([lx*ly,lxx*lyy],dtype=np.complex_);
-	r2o=np.zeros([lx*ly*lhx,lxx*lyy*lhxx],dtype=np.complex_);
-	r3o=np.zeros([lx*ly*lhx*lhy,lxx*lyy*lhxx*lhyy],dtype=np.complex_);
+	r1o=np.zeros([lx*ly,lxx*lyy],dtype=np.complex128);
+	r2o=np.zeros([lx*ly*lhx,lxx*lyy*lhxx],dtype=np.complex128);
+	r3o=np.zeros([lx*ly*lhx*lhy,lxx*lyy*lhxx*lhyy],dtype=np.complex128);
 	
 	for ky in range(1,nhy+1):
 		for kx in range(1,nhx+1):
@@ -291,7 +291,7 @@ def P_RD(din,N,K):
 	[U,D,V]=scipy.linalg.svd(din)
 	for j in range(1,N+1):
 		D[j-1]=D[j-1]*(1-np.power(D[N],K)/(np.power(D[j-1],K)+0.000000000000001))
-	dout=np.mat(U[:,0:N])*np.mat(np.diag(D[0:N]))*np.mat(V[0:N,:]);
+	dout=np.asmatrix(U[:,0:N])*np.asmatrix(np.diag(D[0:N]))*np.asmatrix(V[0:N,:]);
 
 	return dout
 	
@@ -302,10 +302,10 @@ def P_A(din,nx,ny,nhx,nhy,lx,ly,lhx,lhy):
 	lhxx=nhx-lhx+1;
 	lhyy=nhy-lhy+1;
 	
-	dout=np.zeros([nx,ny,nhx,nhy],dtype=np.complex_);
+	dout=np.zeros([nx,ny,nhx,nhy],dtype=np.complex128);
 	
 	for ky in range(1,nhy+1):
-		r3o=np.zeros([lx*ly*lhx,lxx*lyy*lhxx],dtype=np.complex_);
+		r3o=np.zeros([lx*ly*lhx,lxx*lyy*lhxx],dtype=np.complex128);
 		if ky<lhy:
 			for id in range(1,ky+1):
 				r3o=r3o+din[(ky-1)*lx*ly*lhx-(id-1)*lx*ly*lhx:ky*lx*ly*lhx-(id-1)*lx*ly*lhx,(id-1)*lxx*lyy*lhxx:lxx*lyy*lhxx+(id-1)*lxx*lyy*lhxx]/ky;
@@ -313,7 +313,7 @@ def P_A(din,nx,ny,nhx,nhy,lx,ly,lhx,lhy):
 			for id in range(1,nhy-ky+2):
 				r3o=r3o+din[(lhy-1)*lx*ly*lhx-(id-1)*lx*ly*lhx:lhy*lx*ly*lhx-(id-1)*lx*ly*lhx,(ky-lhy)*lxx*lyy*lhxx+(id-1)*lxx*lyy*lhxx:(ky-lhy+1)*lxx*lyy*lhxx+(id-1)*lxx*lyy*lhxx]/(nhy-ky+1);
 		for kx in range(1,nhx+1):
-			r2o=np.zeros([lx*ly,lxx*lyy],dtype=np.complex_);
+			r2o=np.zeros([lx*ly,lxx*lyy],dtype=np.complex128);
 			if kx<lhx:
 				for id in range(1,kx+1):
 					r2o=r2o+ r3o[(kx-1)*lx*ly-(id-1)*lx*ly:kx*lx*ly-(id-1)*lx*ly,(id-1)*lxx*lyy:lxx*lyy+(id-1)*lxx*lyy]/kx;
@@ -333,7 +333,7 @@ def ave_antid(din):
 	""" averaging along antidiagonals """
 	[n1,n2]=din.shape;
 	nout=n1+n2-1;
-	dout=np.zeros(nout,dtype=np.complex_);
+	dout=np.zeros(nout,dtype=np.complex128);
 
 	for i in range(1,nout+1):
 		if i<n1:

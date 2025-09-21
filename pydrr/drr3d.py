@@ -56,7 +56,7 @@ def drr3d(D, flow=1, fhigh=124, dt=0.004, N=1, K=3, verb=0):
 	
 	#Transform into F-X domain
 	DATA_FX=np.fft.fft(D,nf,0);
-	DATA_FX0=np.zeros([nf,nx,ny],dtype=np.complex_);
+	DATA_FX0=np.zeros([nf,nx,ny],dtype=np.complex128);
 
 	#First and last nts of the DFT.
 	ilow  = np.floor(flow*dt*nf)+1;
@@ -74,7 +74,7 @@ def drr3d(D, flow=1, fhigh=124, dt=0.004, N=1, K=3, verb=0):
 	lxx=nx-lx+1;
 	ly=int(np.floor(ny/2)+1);
 	lyy=ny-ly+1;
-	M=np.zeros([lx*ly,lxx*lyy],dtype=np.complex_);
+	M=np.zeros([lx*ly,lxx*lyy],dtype=np.complex128);
 	
 	#main loop
 	for k in range(ilow,ihigh+1):
@@ -164,7 +164,7 @@ def drr3d_auto(D, flow=1, fhigh=124, dt=0.004, N=1, K=3, verb=0, mode=2, eps=0.0
 	
 	#Transform into F-X domain
 	DATA_FX=np.fft.fft(D,nf,0);
-	DATA_FX0=np.zeros([nf,nx,ny],dtype=np.complex_);
+	DATA_FX0=np.zeros([nf,nx,ny],dtype=np.complex128);
 
 	#First and last nts of the DFT.
 	ilow  = np.floor(flow*dt*nf)+1;
@@ -182,7 +182,7 @@ def drr3d_auto(D, flow=1, fhigh=124, dt=0.004, N=1, K=3, verb=0, mode=2, eps=0.0
 	lxx=nx-lx+1;
 	ly=int(np.floor(ny/2)+1);
 	lyy=ny-ly+1;
-	M=np.zeros([lx*ly,lxx*lyy],dtype=np.complex_);
+	M=np.zeros([lx*ly,lxx*lyy],dtype=np.complex128);
 	
 	#main loop
 	for k in range(ilow,ihigh+1):
@@ -279,7 +279,7 @@ def drr3drecon(D, MASK, flow=1, fhigh=124, dt=0.004, N=3, K=3, Niter=10,eps=0.00
 	
 	#Transform into F-X domain
 	DATA_FX=np.fft.fft(D,nf,0);
-	DATA_FX0=np.zeros([nf,nx,ny],dtype=np.complex_);
+	DATA_FX0=np.zeros([nf,nx,ny],dtype=np.complex128);
 
 	#First and last nts of the DFT.
 	ilow  = np.floor(flow*dt*nf)+1;
@@ -297,7 +297,7 @@ def drr3drecon(D, MASK, flow=1, fhigh=124, dt=0.004, N=3, K=3, Niter=10,eps=0.00
 	lxx=nx-lx+1;
 	ly=int(np.floor(ny/2)+1);
 	lyy=ny-ly+1;
-	M=np.zeros([lx*ly,lxx*lyy],dtype=np.complex_);
+	M=np.zeros([lx*ly,lxx*lyy],dtype=np.complex128);
 	
 	print('mask.shape',mask.shape)
 	#main loop
@@ -419,7 +419,7 @@ def drr3drecon_auto(D, MASK, flow=1, fhigh=124, dt=0.004, N=3, K=3, Niter=10,eps
 	
 	#Transform into F-X domain
 	DATA_FX=np.fft.fft(D,nf,0);
-	DATA_FX0=np.zeros([nf,nx,ny],dtype=np.complex_);
+	DATA_FX0=np.zeros([nf,nx,ny],dtype=np.complex128);
 
 	#First and last nts of the DFT.
 	ilow  = np.floor(flow*dt*nf)+1;
@@ -437,7 +437,7 @@ def drr3drecon_auto(D, MASK, flow=1, fhigh=124, dt=0.004, N=3, K=3, Niter=10,eps
 	lxx=nx-lx+1;
 	ly=int(np.floor(ny/2)+1);
 	lyy=ny-ly+1;
-	M=np.zeros([lx*ly,lxx*lyy],dtype=np.complex_);
+	M=np.zeros([lx*ly,lxx*lyy],dtype=np.complex128);
 	
 	print('mask.shape',mask.shape)
 	#main loop
@@ -489,7 +489,7 @@ def P_H(din,lx,ly):
 	[nx,ny]=din.shape;
 	lxx=nx-lx+1;
 	lyy=ny-ly+1;
-	dout=np.zeros([lx*ly,lxx*lyy],dtype=np.complex_)
+	dout=np.zeros([lx*ly,lxx*lyy],dtype=np.complex128)
 	
 	for j in range(1,ny+1):
 		r=scipy.linalg.hankel(din[0:lx,j-1],din[lx-1:nx,j-1]);
@@ -507,7 +507,7 @@ def P_RD(din,N,K):
 	[U,D,V]=scipy.linalg.svd(din)
 	for j in range(1,N+1):
 		D[j-1]=D[j-1]*(1-np.power(D[N],K)/(np.power(D[j-1],K)+0.000000000000001))
-	dout=np.mat(U[:,0:N])*np.mat(np.diag(D[0:N]))*np.mat(V[0:N,:]);
+	dout=np.asmatrix(U[:,0:N])*np.asmatrix(np.diag(D[0:N]))*np.asmatrix(V[0:N,:]);
 
 	return dout
 
@@ -538,7 +538,7 @@ def P_RDA(din,Nmin,Nmax,K,mode,eps):
 	
 	for j in range(1,N+1):
 		D[j-1]=D[j-1]*(1-np.power(D[N],K)/(np.power(D[j-1],K)+0.000000000000001))
-	dout=np.mat(U[:,0:N])*np.mat(np.diag(D[0:N]))*np.mat(V[0:N,:]);
+	dout=np.asmatrix(U[:,0:N])*np.asmatrix(np.diag(D[0:N]))*np.asmatrix(V[0:N,:]);
 
 	return dout
 	
@@ -547,7 +547,7 @@ def P_A(din,nx,ny,lx,ly):
 	lxx=nx-lx+1;
 	lyy=ny-ly+1;
 
-	dout=np.zeros([nx,ny],dtype=np.complex_);
+	dout=np.zeros([nx,ny],dtype=np.complex128);
 	
 	for j in range(1,ny+1):
 		if j<ly:
@@ -563,7 +563,7 @@ def ave_antid(din):
 	""" averaging along antidiagonals """
 	[n1,n2]=din.shape;
 	nout=n1+n2-1;
-	dout=np.zeros(nout,dtype=np.complex_);
+	dout=np.zeros(nout,dtype=np.complex128);
 
 	for i in range(1,nout+1):
 		if i<n1:
